@@ -1,6 +1,6 @@
 <div class="section article">
   <div class="header">
-    <h2><%= @entry.title %></h2>
+    <h2><a href="<%= @entry.link %>"><%= @entry.title %></a></h2>
     <ul class="info">
       <li class="date"><%= l @entry.created_at, :format => :long %></li>
       <% unless @entry.category.nil? %>
@@ -10,6 +10,7 @@
       <li class="tags"><%= @entry.tags_to_html %></li>
       <% end %>
       <li class="author"><%= @entry.user.name %></li>
+      <li class="hatena_star"></li>
     </ul>
   </div>
   <div class="body">

@@ -4,18 +4,57 @@
     <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<% if entry? %>
+  <% if entry? %>
     <title><%= @entry.title %> - <%= @site.title %></title>
-<% else %>
+  <% else %>
     <title><%= @site.title %></title>
-<% end %>
+  <% end %>
     <meta name="description" content="<%= @site.meta_description %>" />
     <meta name="keywords" content="<%= @site.meta_keywords %>" />
     <link href="/index.atom" rel="alternate" title="<%= @title %>" type="application/atom+xml" />
-    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
-    <link rel="stylesheet" href="<%= @theme.path %>/style.css" type="text/css" />
+  <% if Sinatra::Application.environment == :development %>
+    <link rel="stylesheet" href="<%= @theme.path %>/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="<%= @theme.path %>/css/style.css" type="text/css" />
+  <% else %>
+    <link rel="stylesheet" href="<%= @theme.path %>/css/compiled.css" type="text/css" />
+  <% end %>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+  <% if false %>
     <script type="text/javascript" src="<%= @theme.path %>/script.js"></script>
+  <% end %>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var api_url = "https://api.twitter.com/1/users/show.json?screen_name=9m&callback=?";
+        $.getJSON(api_url, function(json,status) {
+          $("#twitter_icon").html($("<img/>",{ src: json.profile_image_url , class: "service-profile-icon", style: "width:4em;height:4em;" }));
+        });
+      });
+    </script>
+    <script type="text/javascript" src="http://s.hatena.ne.jp/js/HatenaStar.js"></script>
+    <script type="text/javascript">
+    Hatena.Star.Token = 'e309619bd701209bb654bd439959c759a3cf79b5';
+  <% if entry? %>
+    Hatena.Star.SiteConfig = {
+      entryNodes: {
+        'div.article': {
+          uri: 'h2 a',
+          title: 'h2',
+          container: 'li.hatena_star'
+        }
+      }
+    };
+  <% else %>
+    Hatena.Star.SiteConfig = {
+      entryNodes: {
+        'div.article': {
+          uri: 'h3 a',
+          title: 'h3',
+          container: 'li.hatena_star'
+        }
+      }
+    };
+  <% end %>
+    </script>
     <%= header %>
   </head>
   <body>
